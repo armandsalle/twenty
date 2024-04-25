@@ -10,6 +10,11 @@ export const StyledTextInput = styled.input`
   width: 100%;
 `;
 
+export const StyledSearchInput = styled(StyledTextInput)`
+  border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
+  padding: ${({ theme }) => theme.spacing(2)};
+`;
+
 type TextInputProps = {
   placeholder?: string;
   autoFocus?: boolean;

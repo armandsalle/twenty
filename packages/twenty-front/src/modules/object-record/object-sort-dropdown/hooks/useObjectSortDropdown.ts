@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { useSortDropdown } from '@/object-record/object-sort-dropdown/hooks/useSortDropdown';
@@ -14,6 +14,8 @@ import {
 
 // TODO: merge this with useSortDropdown
 export const useObjectSortDropdown = () => {
+  const [searchInput, setSearchInput] = useState('');
+
   const [isSortDirectionMenuUnfolded, setIsSortDirectionMenuUnfolded] =
     useRecoilState(isSortDirectionMenuUnfoldedState);
 
@@ -24,6 +26,7 @@ export const useObjectSortDropdown = () => {
   const resetState = useCallback(() => {
     setIsSortDirectionMenuUnfolded(false);
     setSelectedSortDirection('asc');
+    setSearchInput('');
   }, [setIsSortDirectionMenuUnfolded, setSelectedSortDirection]);
 
   const { toggleDropdown, closeDropdown } = useDropdown(
@@ -63,6 +66,20 @@ export const useObjectSortDropdown = () => {
     });
   };
 
+  const filteredAvailableSortDefinitions = availableSortDefinitions.filter(
+    (sortDefinition) =>
+      sortDefinition.label.toLowerCase().includes(searchInput.toLowerCase()),
+  );
+
+  const isAvailableSortDefinitionsEmpty =
+    filteredAvailableSortDefinitions.length === 0;
+
+  const handleChangeSearchInput = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setSearchInput(event.target.value);
+  };
+
   return {
     isSortDirectionMenuUnfolded,
     setIsSortDirectionMenuUnfolded,
@@ -73,5 +90,9 @@ export const useObjectSortDropdown = () => {
     isSortSelected,
     availableSortDefinitions,
     handleAddSort,
+    isAvailableSortDefinitionsEmpty,
+    filteredAvailableSortDefinitions,
+    searchInput,
+    handleChangeSearchInput,
   };
 };
