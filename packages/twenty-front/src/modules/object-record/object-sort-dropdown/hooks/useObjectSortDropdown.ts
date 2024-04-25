@@ -66,13 +66,13 @@ export const useObjectSortDropdown = () => {
     });
   };
 
-  const sortedAvailableSortDefinitions = availableSortDefinitions.filter(
+  const filteredAvailableSortDefinitions = availableSortDefinitions.filter(
     (sortDefinition) =>
       sortDefinition.label.toLowerCase().includes(searchInput.toLowerCase()),
   );
 
   const isAvailableSortDefinitionsEmpty =
-    sortedAvailableSortDefinitions.length === 0;
+    filteredAvailableSortDefinitions.length === 0;
 
   const handleChangeSearchInput = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -91,7 +91,7 @@ export const useObjectSortDropdown = () => {
     availableSortDefinitions,
     handleAddSort,
     isAvailableSortDefinitionsEmpty,
-    sortedAvailableSortDefinitions,
+    filteredAvailableSortDefinitions,
     searchInput,
     handleChangeSearchInput,
   };

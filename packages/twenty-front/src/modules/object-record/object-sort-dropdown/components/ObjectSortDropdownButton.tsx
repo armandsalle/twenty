@@ -35,7 +35,7 @@ export const ObjectSortDropdownButton = ({
     searchInput,
     handleChangeSearchInput,
     isAvailableSortDefinitionsEmpty,
-    sortedAvailableSortDefinitions,
+    filteredAvailableSortDefinitions,
     handleAddSort,
   } = useObjectSortDropdown();
 
@@ -98,7 +98,7 @@ export const ObjectSortDropdownButton = ({
                   </DropdownMenuItemsContainer>
                 ) : (
                   <DropdownMenuItemsContainer>
-                    {sortedAvailableSortDefinitions
+                    {filteredAvailableSortDefinitions
                       .sort((a, b) => a.label.localeCompare(b.label))
                       .map((availableSortDefinition, index) => (
                         <MenuItem
