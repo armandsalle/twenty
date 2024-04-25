@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
+import { FOCUS_BACKGROUND } from '@/ui/theme/constants/FocusBackground';
 import { HOVER_BACKGROUND } from '@/ui/theme/constants/HoverBackground';
 
 import { MenuItemAccent } from '../../types/MenuItemAccent';
@@ -33,6 +34,7 @@ export const StyledMenuItemBase = styled.li<MenuItemBaseProps>`
   padding: var(--vertical-padding) var(--horizontal-padding);
 
   ${HOVER_BACKGROUND};
+  ${FOCUS_BACKGROUND};
 
   ${({ theme, accent }) => {
     switch (accent) {
@@ -62,6 +64,12 @@ export const StyledMenuItemBase = styled.li<MenuItemBaseProps>`
   user-select: none;
 
   width: calc(100% - 2 * var(--horizontal-padding));
+`;
+
+export const StyledMenuItemEmpty = styled.div`
+  align-self: center;
+  padding: ${({ theme }) => theme.spacing(4)};
+  text-align: center;
 `;
 
 export const StyledMenuItemLabel = styled.div<{ hasLeftIcon: boolean }>`
@@ -113,7 +121,13 @@ export const StyledHoverableMenuItemBase = styled(StyledMenuItemBase)<{
     transition: opacity ${({ theme }) => theme.animation.duration.instant}s ease;
   }
 
-  &:hover {
+  &:focus-visible {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  &:hover,
+  &:focus-visible {
     & .hoverable-buttons {
       opacity: 1;
       pointer-events: auto;

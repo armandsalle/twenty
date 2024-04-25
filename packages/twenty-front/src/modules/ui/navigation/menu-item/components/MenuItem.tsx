@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react';
+import { KeyboardEvent, MouseEvent, useState } from 'react';
 import { IconComponent } from 'twenty-ui';
 
 import { LightIconButtonGroup } from '@/ui/input/button/components/LightIconButtonGroup';
@@ -24,7 +24,9 @@ export type MenuItemProps = {
   isTooltipOpen?: boolean;
   className?: string;
   testId?: string;
-  onClick?: (event: MouseEvent<HTMLLIElement>) => void;
+  onClick?: (
+    event: MouseEvent<HTMLLIElement> | KeyboardEvent<HTMLLIElement>,
+  ) => void;
 };
 
 export const MenuItem = ({
@@ -38,9 +40,12 @@ export const MenuItem = ({
   testId,
   onClick,
 }: MenuItemProps) => {
+  const [isFocus, setFocus] = useState(false);
   const showIconButtons = Array.isArray(iconButtons) && iconButtons.length > 0;
 
-  const handleMenuItemClick = (event: MouseEvent<HTMLLIElement>) => {
+  const handleMenuItemClick = (
+    event: MouseEvent<HTMLLIElement> | KeyboardEvent<HTMLLIElement>,
+  ) => {
     if (!onClick) return;
     event.preventDefault();
     event.stopPropagation();
@@ -56,6 +61,15 @@ export const MenuItem = ({
       accent={accent}
       isMenuOpen={!!isTooltipOpen}
       isIconDisplayedOnHoverOnly={isIconDisplayedOnHoverOnly}
+      tabIndex={onClick ? 0 : -1}
+      onFocus={() => setFocus(true)}
+      onBlur={() => setFocus(false)}
+      onKeyDown={(event) => {
+        if (!onClick) return;
+        if (isFocus && event.key === 'Enter') {
+          handleMenuItemClick(event);
+        }
+      }}
     >
       <StyledMenuItemLeftContent>
         <MenuItemLeftContent LeftIcon={LeftIcon ?? undefined} text={text} />
